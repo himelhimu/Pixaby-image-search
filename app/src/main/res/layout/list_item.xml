@@ -28,17 +28,19 @@
             app:imageUrl="@{image.previewURL}"
             android:layout_height="wrap_content"/>
         <LinearLayout
+            android:padding="16dp"
             android:orientation="vertical"
             android:layout_weight=".7"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
             <TextView
-                android:text="@{image.user}"
+                android:text="@{`user : `+image.user}"
                 android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:text="@{image.tags}"
+                android:layout_marginTop="5dp"
+                android:text="@{`tags : `+image.tags}"
                 android:id="@+id/tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

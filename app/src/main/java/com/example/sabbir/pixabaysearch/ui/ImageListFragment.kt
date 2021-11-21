@@ -3,6 +3,7 @@ package com.example.sabbir.pixabaysearch.ui
 import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -60,7 +61,15 @@ class ImageListFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
-            mainViewModel.searchForImages(binding.editQuery.text.toString())
+            val query = binding.editQuery.text.toString()
+            if (query.isEmpty()){
+                binding.editQuery.error = "Provide input"
+                Toast.makeText(requireContext(),"Please provide some input",Toast.LENGTH_SHORT).show()
+            } else{
+                if (isInternetAvailable(requireContext())){
+                    mainViewModel.searchForImages(query)
+                }else Toast.makeText(requireContext(),"Internet not available",Toast.LENGTH_SHORT).show()
+            }
         }
 
         mainViewModel.dataLoading.observe(viewLifecycleOwner,{
@@ -122,11 +131,11 @@ class ImageListFragment : DaggerFragment() {
         super.onResume()
         if (binding.imageRecylrView.adapter==null && isInternetAvailable(requireContext())){
             mainViewModel.searchForImages("fruits")
-        }else Toast.makeText(requireContext(),"Internet not available",Toast.LENGTH_SHORT).show()
+        }else if(!isInternetAvailable(requireContext())) Toast.makeText(requireContext(),"Internet not available",Toast.LENGTH_SHORT).show()
     }
 
 
-    fun openImageHitDetails(imageHit: ImageHit){
+    private fun openImageHitDetails(imageHit: ImageHit){
         val action = ImageListFragmentDirections.actionFirstFragmentToSecondFragment(imageHit)
         findNavController().navigate(action)
     }
