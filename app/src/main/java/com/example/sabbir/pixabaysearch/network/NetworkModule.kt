@@ -1,5 +1,6 @@
 package com.example.sabbir.pixabaysearch.network
 
+import com.example.sabbir.pixabaysearch.BuildConfig
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -21,6 +22,19 @@ import okhttp3.Request
  */
 @Module
 class NetworkModule {
+
+    companion object{
+
+        init {
+            System.loadLibrary("Keys.c")
+        }
+    }
+
+    private fun getApiKey():String =  BuildConfig.API_KEY
+
+
+    external fun getNativeKey1():String
+
     @Singleton
     @Provides
     fun provideNumbersApiService(okHttpClient: OkHttpClient) : PixabyApiService{
@@ -56,7 +70,7 @@ class NetworkModule {
             val originalHttpUrl = original.url
 
             val url = originalHttpUrl.newBuilder()
-                .addQueryParameter("key", "24387929-6c8c0cbe0d693208dd6918d5e")
+                .addQueryParameter("key", getApiKey())
                 .build()
             /*// Request customization: add request headers
             val requestBuilder: Request.Builder = original.newBuilder()
